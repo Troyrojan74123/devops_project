@@ -1,0 +1,28 @@
+name: SSH into Remote Machine
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Setup SSH
+        uses: webfactory/ssh-agent@v0.5.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+          
+      - name: SSH into Remote Machine
+        run: |
+          ssh -o StrictHostKeyChecking=no -i ${{ secrets.SSH_PRIVATE_KEY_PATH }} root@18.214.238.26 'echo "Hello, from GitHub Actions!"'
+
+          # Add more commands as needed
+
+# Add your SSH_PRIVATE_KEY as a secret in your GitHub repository settings
+# You can add the SSH_PRIVATE_KEY_PATH secret if your key is not in the default location
